@@ -3,30 +3,26 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/04/Mult.asm
 
-// Multiplies R0 and R1 and stores the result in R2.
-// (R0, R1, R2 refer to RAM[0], RAM[1], and RAM[2], respectively.)
+// adds 1+...+100
 
 // Put your code here.
-@R2
+@i
+M=1
+@sum
 M=0
-@R0
-D=M
-@END
-D;JEQ
-@R1
-D=M
-@END
-D;JEQ
-
 (LOOP)
-	@R2
-	M=M+D
-	@R0
-	MD=M-1
-	@END
-	D;JEQ
-	@R1
+	@i
 	D=M
+	@100
+	D=D-A
+	@END
+	D;JGT
+	@i
+	D=M
+	@sum
+	M=D+M
+	@i
+	M=M+1
 	@LOOP
 	0;JMP
 
