@@ -15,18 +15,70 @@
 
 @SCREEN
 D=A
-
-@pixel
+@chunk
 M=D
 
 
 (LOOP)
+@KBD
+D=M
 
-    @pixel
-    AD=M
-    M=1
-    @pixel
-    M=M+1
+//Jump if no input
+@NOINPUT
+D;JEQ
 
-    @LOOP
-    0;JMP
+//Fill screen otherwise
+
+//If M[chunk] = 245756 (end of screen)
+//set M[chunk] = 24575 and go back to loop
+
+
+@chunk
+D=M
+@24576
+D=D-A
+@EOSREACHED
+D;JEQ
+
+@chunk
+A=M
+M=-1
+@chunk
+M=M+1
+@LOOP
+0;JEQ
+
+(EOSREACHED)
+@24575
+D=A
+@chunk
+M=D
+@LOOP
+0;JEQ
+
+
+(NOINPUT)
+//FILL IN, UNFILL SCREEN
+
+@chunk
+D=M
+@SCREEN
+D=D-A
+@SOSREACHED
+D;JLT
+
+@chunk
+A=M
+M=0
+@chunk
+M=M-1
+@LOOP
+0;JEQ
+
+(SOSREACHED)
+@SCREEN
+D=A
+@chunk
+M=D
+@LOOP
+0;JEQ

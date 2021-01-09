@@ -1,0 +1,20 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/a/RAM8.hdl
+
+/**
+ Test chip
+ */
+
+CHIP Test {
+    IN in[16], muxsel;
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    Mux16(a=memin,b=in,sel=muxsel,out=muxout);
+    Register(in=muxout,load=true,out[0..2]=regout);
+    RAM8(in=false,load=false,address=regout,out=memin,out=out);
+    
+}

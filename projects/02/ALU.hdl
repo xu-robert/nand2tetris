@@ -59,15 +59,12 @@ CHIP ALU {
     Mux16(a=xandy,b=xplusy,sel=f,out=oa); //select using f
     
     Not16(in=oa,out=noa); //not output
-    Mux16(a=oa,b=noa,sel=no,out=o1); //select out or not our using no, o1 is final output but we cant label it out
+    Mux16(a=oa,b=noa,sel=no,out=out,out[15]=ng,out[0..7]=halfout1,out[8..15]=halfout2); //select out or not our using no
     
-    And16(a=true,b=o1,out[0..7]=o2,out[8..15]=o3); // pipe output into 2 8 bit bus
-    Or8Way(in=o2,out=r1); // r1 1 if any bit in o2 is 1
-    Or8Way(in=o3,out=r2); // r2 1 if any bit in o3 is 1
+    Or8Way(in=halfout1,out=r1); // r1 1 if any bit in o2 is 1
+    Or8Way(in=halfout2,out=r2); // r2 1 if any bit in o3 is 1
     Or(a=r1,b=r2,out=nz); // not zero (nz) 1 if any bit in o2 or o3 is 1
     Not(in=nz,out=zr); // not (not zero) = zero. 1 if all o2 and o3 = 0
 
-    And16(a=true,b=o1,out[15]=ng,out[0..14]=drop); // pipe o1 last bit to ng - if ng 1, then negative 
-    
-    Or16(a=false,b=o1,out=out); //return output (or(false,in) = in)
+
 }
